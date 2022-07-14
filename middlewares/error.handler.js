@@ -2,7 +2,7 @@ function logErrors (err, req, res, next) { //este middle solo captura el error y
     console.log('logErrors')
     console.error(err);
     next(err)
-}
+};
 
 function errorHandler (err, req, res, next) { //este lo acaba con la peticion y manda al cliente el mensaje
     console.log('errorHandler')
@@ -10,7 +10,7 @@ function errorHandler (err, req, res, next) { //este lo acaba con la peticion y 
         message: err.message,
         stack: err.stack,
     })
-} 
+};
 
 function boomErrorHandler (err, req, res, next) { 
     console.log('boomError');
@@ -19,7 +19,7 @@ function boomErrorHandler (err, req, res, next) {
         res.status(output.statusCode).json(output.payload)
     }
     next(err);
-} 
+};
 
 module.exports = {
     logErrors,

@@ -1,6 +1,8 @@
 //Single responsibility principle
 const express = require('express');
-const ProductsService = require('../services/product.service')
+const ProductsService = require('../services/product.service');
+const validatorHandler = require('../middlewares/validator.handler');
+const { createProductchema, updateProductchema, getProductchema } = require('../schemas/product.schema');
 
 //aqui no tenemos acceso a la app de express entonces crearemos un router y cambiaremos app.get por router.get y este router estara importado en el index.js
 
