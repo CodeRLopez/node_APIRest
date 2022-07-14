@@ -14,7 +14,7 @@ const service = new ProductsService(); //creamos una instancia del servicio que 
 
 //get
 
-router.get('/', (req, res) => {
+router.get('/', async(req, res) => {
     // const products = [];
     // const { size } = req.query;
     // const limit = size || 10;
@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
     //         image: faker.image.imageUrl(),
     //     })  
     // }     todo esto es logica de negocio, tiene que ir en services
-    const products = service.find();
+    const products = await service.find();
     res.json(products);
 });
 
@@ -34,7 +34,7 @@ router.get('/filter', (req, res) => {
     res.send('Yo soy un filter')
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     const {id} = req.params;
 
     // if (id === '999') {
@@ -48,32 +48,32 @@ router.get('/:id', (req, res) => {
     //         price: 2000
     //     });
     // }
-    const product = service.findOne(id);
+    const product = await service.findOne(id);
     res.json(product);
 });
 
 //post 
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
    const body = req.body; 
-   const newProduct = service.create(body);
+   const newProduct = await service.create(body);
    res.status(201).json(newProduct);
 });
 
 //patch
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', async (req, res) => {
     const { id } = req.params;
     const body = req.body
-    const product = service.update(id, body)
+    const product = await service.update(id, body)
     res.json(product);
  });
  
  //delete
 
- router.delete('/:id', (req, res) => {
+ router.delete('/:id', async (req, res) => {
     const { id } = req.params;
-    const rta = service.delete(id)
+    const rta = await service.delete(id)
     res.json(rta);
  });
 

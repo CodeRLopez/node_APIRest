@@ -22,7 +22,7 @@ class productsServices {
 
     //Aqui tiene que ir todo el manejo transaccional de un producto, toda la logica
 
-    create(data) {
+    async create(data) {
         const newProduct = {
             id: faker.datatype.uuid(),
             ...data
@@ -35,14 +35,18 @@ class productsServices {
     };
 
     find() {
-        return this.products;
+        return new Promise ((resolve, reject) => {
+            setTimeout(() => {
+                resolve (this.products);
+            }, 3000)  //Aqui simulamos un delay asi como si pidieramos la informacion desde una fuente externa y como retorna una primesa tenemos que hacer uso del async await en la funcion donde lo recibe.
+        });
     };
 
-    findOne(id) {
+    async findOne(id) {
         return this.products.find(item => item.id === id)
     };
 
-    update(id, changes) {
+    async update(id, changes) {
         const index = this.products.findIndex(item => item.id === id);
         if (index === -1) {
             throw new Error('Product not found');
@@ -55,7 +59,7 @@ class productsServices {
         return this.products[index];
     };
 
-    delete(id) {
+    async delete(id) {
         const index = this.products.findIndex(item => item.id === id);
         if (index === -1) {
             throw new Error('Product not found');
