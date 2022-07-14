@@ -1,6 +1,6 @@
 const express = require('express');
 const routerApi = require('./routes')
-const { logErrors, errorHandler } = require('./middlewares/error.handler');
+const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/error.handler');
 
 const app = express();
 const port = 3000;
@@ -19,6 +19,7 @@ app.get('/nueva-ruta', (req, res) => {
 routerApi(app);
 
 app.use(logErrors); // si en el middleware no ejecutaramos next() no pasaria al siguiente middleware que seria errorHandler
+app.use(boomErrorHandler);
 app.use(errorHandler); //hay que tener cado en que orden ponemos los middlewares porque de esa manera se ejecutaran ya que son secuenciales
 
 

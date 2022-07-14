@@ -1,5 +1,5 @@
 const faker = require('faker');
-
+const boom = require('@hapi/boom');
 
 class productsServices {
 
@@ -16,6 +16,7 @@ class productsServices {
                 name: faker.commerce.productName(),
                 price: parseInt(faker.commerce.price(), 10),
                 image: faker.image.imageUrl(),
+                isBlock: faker.datatype.boolean(), //va a mandar true o false de mandera random
             });  
         }
     }
@@ -43,14 +44,20 @@ class productsServices {
     };
 
     async findOne(id) {
-        const name = this.getTotal();
-        return this.products.find(item => item.id === id)
+        const product = this.products.find(item => item.id === id);
+        if (!product) {
+            throw boom.notFound('Product not found');
+        }
+        if (product.isBlock) { //aqui se evaluara si el producto esta bloqueado y en el caso en que lo este mandara un error de tipo conflict que sera 409
+            throw boom.conflict('Product is blocked');
+        }
+        return product;
     };
 
     async update(id, changes) {
         const index = this.products.findIndex(item => item.id === id);
         if (index === -1) {
-            throw new Error('Product not found');
+            throw boom.notFound('Product not found');
         } 
         const product = this.products[index];
         this.products[index] = {
@@ -63,7 +70,7 @@ class productsServices {
     async delete(id) {
         const index = this.products.findIndex(item => item.id === id);
         if (index === -1) {
-            throw new Error('Product not found');
+            throw boom.notFound('Product not found');
         } 
         this.products.splice(index, 1);
         return {
